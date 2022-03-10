@@ -15,23 +15,29 @@ function create(formData) {
     .then((createdRecords) => createdRecords[0]);
 }
 
-async function addReservation(reservation_id, table_id) {
+async function seatReservation(reservation_id, table_id) {
+  // updates status for reservations table
   await knex("reservations").where(reservation_id).update({ status: "seated" });
+
+  // updates reservation_id for tables table
   return knex("tables")
     .where({ table_id })
     .update(reservation_id, "*")
     .then((updatedRecords) => updatedRecords[0]);
 }
 
-async function removeReservation(table_id) {
+async function finishReservation(table_id) {
   const { reservation_id } = await read(table_id);
+  // updates status for reservations table
   await knex("reservations")
     .where({ reservation_id })
     .update({ status: "finished" });
+
+  // updates reservation_id for tables table
   return knex("tables")
     .where({ table_id })
     .update({ reservation_id: null }, "*")
     .then((updatedRecords) => updatedRecords[0]);
 }
 
-module.exports = { list, create, read, addReservation, removeReservation };
+module.exports = { list, create, read, seatReservation, finishReservation };

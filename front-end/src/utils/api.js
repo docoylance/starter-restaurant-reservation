@@ -59,7 +59,7 @@ async function fetchJson(url, options, onCancel) {
  */
 
 // RESERVATIONS
-
+// sends an API call to list reservations
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
   Object.entries(params).forEach(([key, value]) =>
@@ -70,13 +70,15 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-export async function findNumber(mobile_number, signal) {
+// sends an API call to list the reservations with the queried mobile number
+export async function listQueryNumber(mobile_number, signal) {
   const url = new URL(
     `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`
   );
   return await fetchJson(url, { headers, signal }, []);
 }
 
+// sends an API call to create a reservation
 export async function createReservation(reservation, signal) {
   reservation.people = parseInt(reservation.people);
   const url = `${API_BASE_URL}/reservations`;
@@ -89,21 +91,13 @@ export async function createReservation(reservation, signal) {
   return await fetchJson(url, options, reservation);
 }
 
+// sends an API call to read a reservation
 export async function loadReservation(reservation_id, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
   return await fetchJson(url, { headers, signal }, []);
 }
 
-export async function seatReservation(reservation_id, table_id) {
-  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
-  const options = {
-    method: "PUT",
-    body: JSON.stringify({ data: { reservation_id } }),
-    headers,
-  };
-  return await fetchJson(url, options, {});
-}
-
+// sends an API call to update a reservation
 export async function updateReservation(reservation, reservation_id, signal) {
   reservation.people = parseInt(reservation.people);
   const url = `${API_BASE_URL}/reservations/${reservation_id}`;
@@ -116,6 +110,7 @@ export async function updateReservation(reservation, reservation_id, signal) {
   return await fetchJson(url, options, reservation);
 }
 
+// sends an API call to cancel a reservation
 export async function cancelReservation(reservation_id) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
   const options = {
@@ -126,23 +121,15 @@ export async function cancelReservation(reservation_id) {
   return await fetchJson(url, options, {});
 }
 
-export async function removeReservation(reservation_id, table_id) {
-  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
-  const options = {
-    method: "DELETE",
-    body: JSON.stringify({ data: { reservation_id } }),
-    headers,
-  };
-  return await fetchJson(url, options, {});
-}
-
 // TABLES
 
+// sends an API call to list tables
 export async function listTables(signal) {
   const url = new URL(`${API_BASE_URL}/tables`);
   return await fetchJson(url, { headers, signal }, []);
 }
 
+// sends an API call to create a table
 export async function createTable(table, signal) {
   table.capacity = parseInt(table.capacity);
   const url = `${API_BASE_URL}/tables`;
@@ -155,7 +142,38 @@ export async function createTable(table, signal) {
   return await fetchJson(url, options, table);
 }
 
+// sends an API call to read a table
 export async function loadTable(table_id, signal) {
   const url = new URL(`${API_BASE_URL}/tables/${table_id}`);
   return await fetchJson(url, { headers, signal }, []);
+}
+
+/**
+ * sends an API call
+ * to update the reservation status to seated
+ * to assign a reservation to a table
+ */
+export async function seatReservation(reservation_id, table_id) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    body: JSON.stringify({ data: { reservation_id } }),
+    headers,
+  };
+  return await fetchJson(url, options, {});
+}
+
+/**
+ * sends an API call to
+ * to update the reservation status to finished
+ * to remove a reservation from a table
+ */
+export async function finishReservation(reservation_id, table_id) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    body: JSON.stringify({ data: { reservation_id } }),
+    headers,
+  };
+  return await fetchJson(url, options, {});
 }

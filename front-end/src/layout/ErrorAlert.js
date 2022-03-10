@@ -9,7 +9,9 @@ import React from "react";
  */
 
 function ErrorAlert({ error }) {
+  // checks if error prop is an array
   if (Array.isArray(error))
+    // maps the error prop into a list of errors
     return (
       error && (
         <div className="alert alert-danger m-2">
@@ -22,6 +24,7 @@ function ErrorAlert({ error }) {
         </div>
       )
     );
+
   return (
     error && (
       <div className="alert alert-danger m-2">Error: {error.message}</div>

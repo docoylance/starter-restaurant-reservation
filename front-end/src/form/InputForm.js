@@ -1,3 +1,7 @@
+/**
+ * Defines the input component.
+ * @returns {JSX.Element}
+ */
 export default function InputForm({
   type = "text",
   id,

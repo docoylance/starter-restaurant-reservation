@@ -10,7 +10,7 @@ function list(reservation_date) {
   return knex("reservations").select();
 }
 
-function listQueryNumbers(mobile_number) {
+function listQueryNumber(mobile_number) {
   return knex("reservations")
     .whereRaw(
       "translate(mobile_number, '() -', '') like ?",
@@ -44,4 +44,4 @@ function updateStatus(status, reservation_id) {
     .then((updatedRecords) => updatedRecords[0]);
 }
 
-module.exports = { list, listQueryNumbers, create, read, update, updateStatus };
+module.exports = { list, listQueryNumber, create, read, update, updateStatus };

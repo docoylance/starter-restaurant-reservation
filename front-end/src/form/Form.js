@@ -1,5 +1,11 @@
 import Input from "./Input";
 
+/**
+ * Defines the form component.
+ * @prop inputs
+ *  the input elements data of a form.
+ * @returns {JSX.Element}
+ */
 export default function Form({
   inputs,
   formData,
@@ -7,6 +13,7 @@ export default function Form({
   handleSubmit,
   handleCancel,
 }) {
+  // maps passed-in inputs prop to input elements
   const inputList = inputs.map((input, key) => (
     <Input
       key={key}

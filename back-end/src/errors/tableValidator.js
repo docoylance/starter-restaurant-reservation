@@ -3,7 +3,8 @@ const properties = ["table_name", "capacity"];
 function tableValidator(req, res, next) {
   const { data = null } = req.body;
   if (!data) return next({ status: 400, message: "data is required." });
-  const { table_name, capacity } = data;
+
+  // checks if request data has missing properties
   const missing = [];
   properties.forEach((property) => {
     const value = data[property];
@@ -14,6 +15,9 @@ function tableValidator(req, res, next) {
 
   if (missing.length > 0)
     next({ status: 400, message: `${missing.join(", ")} is required.` });
+
+  // validates request data
+  const { table_name, capacity } = data;
 
   if (table_name.length < 2)
     next({

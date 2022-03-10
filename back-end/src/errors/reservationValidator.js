@@ -10,7 +10,8 @@ const properties = [
 function reservationValidator(req, res, next) {
   const { data = null } = req.body;
   if (!data) return next({ status: 400, message: "data is required." });
-  const { reservation_date, reservation_time, people, status } = data;
+
+  // checks if request data has missing properties
   const missing = [];
   properties.forEach((property) => {
     const value = data[property];
@@ -21,6 +22,9 @@ function reservationValidator(req, res, next) {
 
   if (missing.length > 0)
     next({ status: 400, message: `${missing.join(", ")}is required.` });
+
+  // US-01
+  const { reservation_date, reservation_time, people, status } = data;
 
   if (typeof people !== "number")
     next({

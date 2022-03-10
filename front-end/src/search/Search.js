@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { findNumber } from "../utils/api";
+import { listQueryNumber } from "../utils/api";
 import useQuery from "../utils/useQuery";
 
 import InputForm from "../form/InputForm";
 import ReservationsTable from "../dashboard/ReservationsTable";
 
+/**
+ * Defines the search page.
+ * @returns {JSX.Element}
+ */
 function Search() {
   const history = useHistory();
   const [reservations, setReservations] = useState(null);
@@ -13,23 +17,26 @@ function Search() {
   const query = useQuery();
   const mobile_number = query.get("mobile_number");
 
+  // loads the reservations with the queried mobile number
   useEffect(() => {
     async function loadReservations() {
+      setReservations(null);
+      setReservationsError(null);
       if (mobile_number) {
         const abortController = new AbortController();
-        setReservationsError(null);
         try {
-          const data = await findNumber(mobile_number, abortController.signal);
+          const data = await listQueryNumber(
+            mobile_number,
+            abortController.signal
+          );
           if (!data.length)
             setReservationsError(new Error("No reservations found."));
           setReservations(data);
         } catch (err) {
+          console.error(err);
           setReservationsError(err);
         }
         return () => abortController.abort();
-      } else {
-        setReservations(null);
-        setReservationsError(null);
       }
     }
     loadReservations();
@@ -48,6 +55,8 @@ function Search() {
   function handleSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
+
+    // reloads the page with the submitted mobile number as a query param
     history.push(`/search?mobile_number=${formData.mobile_number}`);
   }
 
@@ -73,6 +82,7 @@ function Search() {
             </button>
           </div>
           <div>
+            {/* checks if reservations were loaded */}
             {reservations && (
               <ReservationsTable
                 reservations={reservations}

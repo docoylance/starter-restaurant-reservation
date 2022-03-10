@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import formatReservationDate from "../utils/format-reservation-date";
 import formatReservationTime from "../utils/format-reservation-time";
@@ -6,6 +7,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 export default function ReservationsTable({ reservations, error }) {
   const history = useHistory();
+  const [cancelError, setCancelError] = useState(null);
 
   async function handleCancel(reservation_id) {
     if (
@@ -13,16 +15,24 @@ export default function ReservationsTable({ reservations, error }) {
         "Do you want to cancel this reservation? This cannot be undone."
       )
     ) {
-      await cancelReservation(reservation_id);
-      history.go(0);
+      try {
+        await cancelReservation(reservation_id);
+        history.go(0);
+      } catch (err) {
+        console.error(err);
+        setCancelError(err);
+      }
     }
   }
 
+  // sets initial reservations list to empty
   let reservationsList = (
     <tr>
       <td colSpan={6}>No reservations found.</td>
     </tr>
   );
+
+  // maps reservations list to rows of reservations
   if (reservations.length)
     reservationsList = formatReservationDate(
       formatReservationTime(reservations)
@@ -78,6 +88,7 @@ export default function ReservationsTable({ reservations, error }) {
             >
               Cancel
             </button>
+            <ErrorAlert error={cancelError} />
           </td>
         </tr>
       )

@@ -20,10 +20,10 @@ import Search from "../search/Search";
 function Routes() {
   return (
     <Switch>
-      <Route exact={true} path="/">
+      <Route exact path="/">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact={true} path="/reservations">
+      <Route exact path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
       <Route exact path="/dashboard">
