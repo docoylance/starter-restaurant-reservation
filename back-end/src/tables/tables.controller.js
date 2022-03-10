@@ -10,6 +10,7 @@ async function list(req, res) {
 
 async function create(req, res) {
   const data = await service.create(req.body.data);
+  // converts people property to integer value;
   data.people = parseInt(data.people);
   res.status(201).json({ data });
 }
@@ -25,26 +26,26 @@ async function read(req, res, next) {
   res.json({ data });
 }
 
-async function addReservation(req, res) {
+async function seatReservation(req, res) {
   const { table_id } = req.params;
-  res.json({ data: await service.addReservation(req.body.data, table_id) });
+  res.json({ data: await service.seatReservation(req.body.data, table_id) });
 }
 
-async function removeReservation(req, res) {
+async function finishReservation(req, res) {
   const { table_id } = req.params;
-  res.json({ data: await service.removeReservation(table_id) });
+  res.json({ data: await service.finishReservation(table_id) });
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [tableValidator, asyncErrorBoundary(create)],
   read: asyncErrorBoundary(read),
-  addReservation: [
+  seatReservation: [
     asyncErrorBoundary(seatValidator),
-    asyncErrorBoundary(addReservation),
+    asyncErrorBoundary(seatReservation),
   ],
-  removeReservation: [
+  finishReservation: [
     asyncErrorBoundary(removeSeatValidator),
-    asyncErrorBoundary(removeReservation),
+    asyncErrorBoundary(finishReservation),
   ],
 };

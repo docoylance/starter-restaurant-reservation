@@ -23,19 +23,23 @@ function Dashboard({ date }) {
   const newDate = query.get("date");
   if (newDate) date = newDate;
 
+  // loads dashboard page
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
+    // loads reservations component
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     setReservationsError(null);
+    // loads tables component
     listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
+  // handlers for reservations navigation
   const handlePrevious = () => {
     history.push(`/dashboard?date=${previous(date)}`);
   };

@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { removeReservation } from "../utils/api";
+import { finishReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 export default function TablesTable({ tables, error }) {
   const history = useHistory();
+  const [finishError, setFinishError] = useState(null);
 
   async function handleClick(reservation_id, table_id) {
     if (
@@ -11,16 +13,24 @@ export default function TablesTable({ tables, error }) {
         "Is this table ready to seat new guests? This cannot be undone."
       )
     ) {
-      await removeReservation(reservation_id, table_id);
-      history.go(0);
+      try {
+        await finishReservation(reservation_id, table_id);
+        history.go(0);
+      } catch (err) {
+        console.error(err);
+        setFinishError(err);
+      }
     }
   }
 
+  // sets initial tables list to empty
   let tablesList = (
     <tr>
       <td colSpan={6}>No tables found.</td>
     </tr>
   );
+
+  // maps tables list to rows of tables
   if (tables.length)
     tablesList = tables.map(
       ({ table_id, table_name, capacity, reservation_id }, index) => (
@@ -33,19 +43,22 @@ export default function TablesTable({ tables, error }) {
           </td>
           <td>
             {reservation_id && (
-              <button
-                className="btn btn-primary mr-2"
-                data-table-id-finish={table_id}
-                onClick={() => handleClick(reservation_id, table_id)}
-              >
-                Finish
-              </button>
+              <>
+                <button
+                  className="btn btn-primary mr-2"
+                  data-table-id-finish={table_id}
+                  onClick={() => handleClick(reservation_id, table_id)}
+                >
+                  Finish
+                </button>
+                <ErrorAlert error={finishError} />
+              </>
             )}
           </td>
         </tr>
       )
     );
-    
+
   return (
     <div>
       <h4 className="mb-0">Tables</h4>

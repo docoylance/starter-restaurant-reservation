@@ -10,6 +10,12 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 import Form from "../form/Form";
 
+/**
+ * Defines the reservation form.
+ * @param type
+ * the type of reservation form.
+ * @returns {JSX.Element}
+ */
 function Reservation({ type = "create" }) {
   const history = useHistory();
   const [reservationsError, setReservationsError] = useState(null);
@@ -25,6 +31,10 @@ function Reservation({ type = "create" }) {
 
   const [formData, setFormData] = useState(initialFormState);
 
+  /**
+   * checks if reservation form is an edit form
+   * loads current reservation data on the input fields
+   */
   useEffect(loadInitialFormState, [params.reservation_id, type]);
 
   function loadInitialFormState() {
@@ -47,9 +57,12 @@ function Reservation({ type = "create" }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  // validates reservation data submitted
   function validate(reservation) {
+    // initializes errors array
     const errors = [];
 
+    // checks if reservation date and time submitted is in the future
     function isFutureDate({ reservation_date, reservation_time }) {
       const resDate = new Date(`${reservation_date}T${reservation_time}`);
       if (resDate < new Date())
@@ -60,6 +73,7 @@ function Reservation({ type = "create" }) {
         );
     }
 
+    // checks if reservation day is set on Tuesday
     function isTuesday({ reservation_date }) {
       const day = new Date(reservation_date).getUTCDay();
       if (day === 2)
@@ -70,6 +84,7 @@ function Reservation({ type = "create" }) {
         );
     }
 
+    // checks if reservation is set during business hours
     function isBusinessHours({ reservation_time }) {
       const hour = parseInt(reservation_time.split(":")[0]);
       const mins = parseInt(reservation_time.split(":")[1]);
@@ -89,23 +104,28 @@ function Reservation({ type = "create" }) {
         );
     }
 
+    // checks if reservation is booked
     function isNotBooked({ status }) {
       if (status !== "booked")
         errors.push(new Error("Only booked reservations can be edited."));
     }
 
+    // validates data
     isFutureDate(reservation);
     isTuesday(reservation);
     isBusinessHours(reservation);
     if (type === "update") isNotBooked(reservation);
 
+    // returns errors array
     return errors;
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
+    const abortController = new AbortController();
 
+    // checks if reservation data submitted has errors
     const formErrors = validate(formData);
     if (formErrors.length) {
       console.error(formErrors);
@@ -113,31 +133,39 @@ function Reservation({ type = "create" }) {
     }
 
     try {
+      // initializes data variable
+      let data;
+      // checks if reservation form is for creating or editing
       if (type === "create") {
-        const { reservation_date } = await createReservation(formData);
-        const url = `/dashboard?date=${formatAsDate(reservation_date)}`;
-        history.push(url);
+        // creates reservation
+        data = await createReservation(formData, abortController.signal);
       } else if (type === "update") {
+        // removes certain keys from reservation data that were loaded in
         delete formData["reservation_id"];
         delete formData["created_at"];
         delete formData["updated_at"];
-        const { reservation_date } = await updateReservation(
+
+        // updates reservation
+        data = await updateReservation(
           formData,
-          params.reservation_id
+          params.reservation_id,
+          abortController.signal
         );
-        const url = `/dashboard?date=${formatAsDate(reservation_date)}`;
-        history.push(url);
       }
+      const url = `/dashboard?date=${formatAsDate(data.reservation_date)}`;
+      history.push(url);
     } catch (err) {
       console.error(err);
       setReservationsError(err);
     }
+    return () => abortController.abort();
   }
 
   const handleCancel = () => {
     history.goBack();
   };
 
+  // initializes the input elements data
   const firstName = {
     type: "text",
     id: "first_name",

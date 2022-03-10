@@ -10,6 +10,10 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 import Form from "../form/Form";
 
+/**
+ * Defines the seat reservation form.
+ * @returns {JSX.Element}
+ */
 function SeatReservation() {
   const history = useHistory();
   const { reservation_id } = useParams();
@@ -17,6 +21,7 @@ function SeatReservation() {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
+  // loads the table options for the drop-down list
   useEffect(loadTables, []);
 
   function loadTables() {
@@ -36,22 +41,36 @@ function SeatReservation() {
     setFormData({ ...formData, [name]: value });
   };
 
+  // validates table option selected
   function validate(seat) {
+    // initializes errors array
     const errors = [];
 
+    // checks if table capacity can seat the number of people reserved
     async function isMore({ table_id }) {
-      const { capacity } = await loadTable(table_id);
-      const { people } = await loadReservation(reservation_id);
-      if (people > capacity)
-        errors.push(
-          new Error(
-            "The number of people reserved exceeds the seating capacity of this table. Please select another table."
-          )
+      const abortController = new AbortController();
+      try {
+        const { capacity } = await loadTable(table_id, abortController.signal);
+        const { people } = await loadReservation(
+          reservation_id,
+          abortController.signal
         );
+        if (people > capacity)
+          errors.push(
+            new Error(
+              "The number of people reserved exceeds the seating capacity of this table. Please select another table."
+            )
+          );
+      } catch (err) {
+        errors.push(err);
+      }
+      return () => abortController.abort();
     }
 
+    // validates data
     isMore(seat);
 
+    // returns errors array
     return errors;
   }
 
@@ -59,12 +78,14 @@ function SeatReservation() {
     event.preventDefault();
     event.stopPropagation();
 
+    // checks if table option selected has errors
     const formErrors = validate(formData);
     if (formErrors.length) {
       console.error(formErrors);
       return setSeatError(formErrors);
     }
 
+    // seats reservation on selected table
     try {
       await seatReservation(reservation_id, Number(formData.table_id));
       history.push("/dashboard");
@@ -78,11 +99,16 @@ function SeatReservation() {
     history.goBack();
   };
 
+  /**
+   * maps loaded tables into option values
+   * initializes options data
+   */
   const options = tables.map(({ table_id, table_name, capacity }) => [
     table_id,
     `${table_name} - ${capacity}`,
   ]);
 
+  // initializes the input elements data
   const tableNumber = {
     type: "select",
     id: "table",

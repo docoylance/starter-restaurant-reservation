@@ -11,7 +11,7 @@ async function list(req, res) {
   const { date = null, mobile_number = null } = req.query;
   let data;
   if (mobile_number) {
-    data = await service.listQueryNumbers(mobile_number);
+    data = await service.listQueryNumber(mobile_number);
   } else if (date) {
     data = await service.list(date);
   }
@@ -53,6 +53,13 @@ module.exports = {
   list: asyncErrorBoundary(list),
   create: [reservationValidator, asyncErrorBoundary(create)],
   read: asyncErrorBoundary(read),
-  update: [asyncErrorBoundary(seatResValidator), reservationValidator, asyncErrorBoundary(update)],
-  updateStatus: [asyncErrorBoundary(seatResValidator), asyncErrorBoundary(updateStatus)],
+  update: [
+    asyncErrorBoundary(seatResValidator),
+    reservationValidator,
+    asyncErrorBoundary(update),
+  ],
+  updateStatus: [
+    asyncErrorBoundary(seatResValidator),
+    asyncErrorBoundary(updateStatus),
+  ],
 };

@@ -1,3 +1,7 @@
+/**
+ * Defines the select component.
+ * @returns {JSX.Element}
+ */
 export default function SelectForm({
   id,
   name,
