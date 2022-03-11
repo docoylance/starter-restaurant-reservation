@@ -1,6 +1,6 @@
 /* headings */
 nav div div span {
-  font-family: "Brush Script MT";
+  font-family: "Brush Script MT", "Abril Fatface", Courier, monospace;
   font-size: 30px;
   color: rgb(209, 184, 184);
 }
@@ -8,7 +8,7 @@ nav div div span {
 h2,
 h3,
 .not-found {
-  font-family: "Abril Fatface";
+  font-family: "Abril Fatface", Courier, monospace;
   color: #302c2c;
   text-align: center;
 }
@@ -22,7 +22,7 @@ h3 {
 }
 
 h4 {
-  font-family: "Bebas Neue";
+  font-family: "Bebas Neue", sans-serif;
 }
 
 .div-border {
@@ -72,13 +72,13 @@ h4 {
 
 .today-button {
   background-color: rgba(0, 0, 0, 0.5);
-  font-family: "Bigshot One";
+  font-family: "Bigshot One", serif;
   color: rgb(199, 150, 150);
 }
 
 .dark-pink,
 label {
-  font-family: "Bigshot One";
+  font-family: "Bigshot One", serif;
   font-weight: bold;
   color: #302c2c;
 }
@@ -87,7 +87,7 @@ label {
 input,
 option,
 select {
-  font-family: "Advent Pro";
+  font-family: "Advent Pro", sans-serif;
 }
 
 /* cards */
