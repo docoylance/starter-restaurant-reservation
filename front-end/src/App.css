@@ -1,0 +1,104 @@
+/* headings */
+nav div div span {
+  font-family: "Brush Script MT";
+  font-size: 30px;
+  color: rgb(209, 184, 184);
+}
+
+h2,
+h3,
+.not-found {
+  font-family: "Abril Fatface";
+  color: #302c2c;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 25px;
+}
+
+h3 {
+  background-color: rgb(143, 125, 125);
+}
+
+h4 {
+  font-family: "Bebas Neue";
+}
+
+.div-border {
+  border: solid rgb(61, 29, 29) 1px;
+  border-radius: 5px;
+}
+
+.res-top-border {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: solid rgb(61, 29, 29) 1px;
+}
+
+.res-bot-border {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* buttons */
+.normal-button, .pink-bg {
+  background-color: rgba(205, 130, 130, 0.2);
+}
+
+.special-button {
+  background-color: rgba(75, 0, 0, 0.35);
+}
+
+.cancel-button {
+  background-color: rgb(156, 127, 127);
+}
+
+.submit-button {
+  background-color: rgb(218, 194, 194);
+}
+
+.normal-button,
+.special-button,
+.cancel-button,
+.submit-button {
+  border-color: rgba(75, 0, 0, 1);
+  color: rgba(75, 0, 0, 1);
+}
+
+.btn-group {
+  background-color: rgb(143, 125, 125, 0.75);
+}
+
+.today-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: "Bigshot One";
+  color: rgb(199, 150, 150);
+}
+
+.dark-pink,
+label {
+  font-family: "Bigshot One";
+  font-weight: bold;
+  color: #302c2c;
+}
+
+/* form */
+input,
+option,
+select {
+  font-family: "Advent Pro";
+}
+
+/* cards */
+.card-footer,
+.card-header {
+  color: rgba(75, 0, 0, 1);
+}
+
+/* background */
+.card,
+input,
+select {
+  background: url(images/main/body-background.jpg);
+}

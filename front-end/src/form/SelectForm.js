@@ -14,12 +14,13 @@ export default function SelectForm({
     <select
       id={id}
       name={name}
+      className="mb-3 form-control"
       size={1}
       required={required}
       onChange={handleChange}
       value={formData[name]}
     >
-      <option value="">-- Select a {id.split("_").join(" ")} --</option>
+      <option value="" className="text-center">-- Select a {id.split("_").join(" ")} --</option>
       {optionsList}
     </select>
   );

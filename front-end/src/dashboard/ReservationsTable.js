@@ -26,11 +26,7 @@ export default function ReservationsTable({ reservations, error }) {
   }
 
   // sets initial reservations list to empty
-  let reservationsList = (
-    <tr>
-      <td colSpan={6}>No reservations found.</td>
-    </tr>
-  );
+  let reservationsList = <p className="mt-3 not-found">No reservations found.</p>;
 
   // maps reservations list to rows of reservations
   if (reservations.length)
@@ -50,69 +46,64 @@ export default function ReservationsTable({ reservations, error }) {
         },
         index
       ) => (
-        <tr key={index}>
-          <td>{reservation_id}</td>
-          <td>
-            {first_name} {last_name}
-          </td>
-          <td>{mobile_number}</td>
-          <td>{reservation_date}</td>
-          <td>{reservation_time}</td>
-          <td>{people}</td>
-          <td data-reservation-id-status={reservation_id}>{status}</td>
-          <td>
-            {status === "booked" && (
-              <a
-                href={`/reservations/${reservation_id}/edit`}
-                className="btn btn-primary mr-2"
+        <div key={index} className="card mt-3">
+          <div className="card-header">#{reservation_id}</div>
+          <div className="card-body">
+            <div className="d-flex justify-content-between text-secondary">
+              <h4 className="h3">
+                {last_name}, {first_name}
+              </h4>
+              <p className="h5 font-weight-normal">
+                {people} person{people.length > 1 && "s"}
+              </p>
+            </div>
+            <div className="text-secondary mt-0">
+              <p className="h6 font-weight-normal">{mobile_number}</p>
+              <p className="h5 font-weight-normal">
+                {reservation_date}, {reservation_time}
+              </p>
+            </div>
+            <div className="d-flex">
+              {status === "booked" && (
+                <>
+                  <a
+                    href={`/reservations/${reservation_id}/edit`}
+                    className="btn normal-button mr-2"
+                  >
+                    Edit
+                  </a>
+                  <a
+                    href={`/reservations/${reservation_id}/seat`}
+                    className="btn normal-button mr-2"
+                  >
+                    Seat
+                  </a>
+                </>
+              )}
+              <button
+                data-reservation-id-cancel={reservation_id}
+                className="btn special-button ml-auto"
+                onClick={() => handleCancel(reservation_id)}
               >
-                Edit
-              </a>
-            )}
-          </td>
-          <td>
-            {status === "booked" && (
-              <a
-                href={`/reservations/${reservation_id}/seat`}
-                className="btn btn-primary mr-2"
-              >
-                Seat
-              </a>
-            )}
-          </td>
-          <td>
-            <button
-              data-reservation-id-cancel={reservation_id}
-              className="btn btn-secondary"
-              onClick={() => handleCancel(reservation_id)}
-            >
-              Cancel
-            </button>
-            <ErrorAlert error={cancelError} />
-          </td>
-        </tr>
+                Cancel
+              </button>
+              <ErrorAlert error={cancelError} />
+            </div>
+          </div>
+          <div
+            className="card-footer"
+            data-reservation-id-status={reservation_id}
+          >
+            {status[0].toUpperCase() + status.slice(1)}
+          </div>
+        </div>
       )
     );
 
   return (
-    <div>
+    <div className="mb-3">
       <ErrorAlert error={error} />
-      {!error && (
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>People</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>{reservationsList}</tbody>
-        </table>
-      )}
+      {!error && reservationsList}
     </div>
   );
 }

@@ -1,4 +1,16 @@
 .side-bar {
-  background-color: #393a44;
+  background-color: #54575a;
   min-width: 200px;
+}
+
+/* background */
+.col {
+  background: url(../images/main/1417459.jpg);
+  background-size: cover;
+}
+
+/* navbar */
+ul li a {
+  font-family: "Advent Pro";
+  font-weight: bold;
 }

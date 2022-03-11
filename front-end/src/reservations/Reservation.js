@@ -218,7 +218,7 @@ function Reservation({ type = "create" }) {
       <div className="d-flex flex-column">
         <ErrorAlert error={reservationsError} />
         <h2>
-          {type === "create" ? "Create New Reservation" : "Edit Reservation"}
+          {type === "create" ? "CREATE NEW RESERVATION" : "EDIT RESERVATION"}
         </h2>
         <Form
           inputs={inputs}
