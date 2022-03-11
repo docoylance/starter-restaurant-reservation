@@ -64,7 +64,7 @@ function NewTable() {
   return (
     <>
       <div className="d-flex flex-column">
-        <h2>Create New Table</h2>
+        <h2>CREATE NEW TABLE</h2>
         <ErrorAlert error={createError} />
         <Form
           inputs={inputs}

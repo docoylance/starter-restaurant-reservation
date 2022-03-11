@@ -25,12 +25,12 @@ export default function Form({
   return (
     <form className="d-flex flex-column h5" onSubmit={handleSubmit}>
       <div>{inputList}</div>
-      <div className="mt-3">
-        <button className="btn btn-primary mr-2" type="submit">
+      <div className="d-flex justify-content-center mt-3">
+        <button className="btn submit-button mr-2" type="submit">
           Submit
         </button>
         <button
-          className="btn btn-secondary"
+          className="btn cancel-button"
           onClick={handleCancel}
           type="button"
         >

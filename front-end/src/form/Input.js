@@ -20,35 +20,37 @@ export default function Input({ inputs, formData, handleChange }) {
   }
 
   return (
-    <>
-      <label htmlFor={id}>
+    <div className="row mb-3">
+      <label htmlFor={id} className="col-sm-2 col-form-label">
         {id
           .split("_")
           .map((word) => word[0].toUpperCase() + word.slice(1))
           .join(" ")}
       </label>
-      {/* checks if form input element is a drop-down list or a text field */}
-      {type === "select" ? (
-        <SelectForm
-          id={id}
-          name={name}
-          required={required}
-          formData={formData}
-          handleChange={handleChange}
-          optionsList={optionsList}
-        />
-      ) : (
-        <InputForm
-          type={type}
-          id={id}
-          name={name}
-          min={min}
-          minLength={minLength}
-          required={required}
-          formData={formData}
-          handleChange={handleChange}
-        />
-      )}
-    </>
+      <div className="col-sm-10">
+        {/* checks if form input element is a drop-down list or a text field */}
+        {type === "select" ? (
+          <SelectForm
+            id={id}
+            name={name}
+            required={required}
+            formData={formData}
+            handleChange={handleChange}
+            optionsList={optionsList}
+          />
+        ) : (
+          <InputForm
+            type={type}
+            id={id}
+            name={name}
+            min={min}
+            minLength={minLength}
+            required={required}
+            formData={formData}
+            handleChange={handleChange}
+          />
+        )}
+      </div>
+    </div>
   );
 }

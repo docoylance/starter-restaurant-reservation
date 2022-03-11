@@ -54,27 +54,31 @@ function Dashboard({ date }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
-        <div className="mt-3">
-          <button className="btn btn-secondary mr-2" onClick={handlePrevious}>
-            Previous
-          </button>
-          <button className="btn btn-primary mr-2" onClick={handleToday}>
-            Today
-          </button>
-          <button className="btn btn-secondary" onClick={handleNext}>
-            Next
-          </button>
+      <h2>DASHBOARD</h2>
+      <div className="row">
+        <div className="container d-flex flex-column mb-3 col-md-6 col-lg-6 col-sm-12">
+          <div className="d-flex flex-column mt-3 div-border">
+            <h3 className="m-0 py-3 res-top-border">Reservations for {date}</h3>
+            <div className="btn-group res-bot-border" role="group">
+              <button className="btn dark-pink" onClick={handlePrevious}>
+                Previous
+              </button>
+              <button className="btn today-button light-pink" onClick={handleToday}>
+                Today
+              </button>
+              <button className="btn dark-pink" onClick={handleNext}>
+                Next
+              </button>
+            </div>
+          </div>
+          <ReservationsTable
+            reservations={reservations}
+            error={reservationsError}
+          />
         </div>
-        <ReservationsTable
-          reservations={reservations}
-          error={reservationsError}
-        />
-      </div>
-      <div>
-        <TablesTable tables={tables} error={tablesError} />
+        <div className="col-md-6 col-lg-6 col-sm-12 mb-3">
+          <TablesTable tables={tables} error={tablesError} />
+        </div>
       </div>
     </main>
   );

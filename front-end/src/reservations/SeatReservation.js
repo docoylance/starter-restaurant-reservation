@@ -122,7 +122,7 @@ function SeatReservation() {
   return (
     <>
       <div className="d-flex flex-column">
-        <h2>Seat Reservation</h2>
+        <h2>SEAT RESERVATION</h2>
         <ErrorAlert error={tablesError} />
         <Form
           inputs={inputs}

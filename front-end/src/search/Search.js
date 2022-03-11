@@ -63,34 +63,38 @@ function Search() {
   return (
     <>
       <div className="d-flex flex-column">
-        <h2>Search</h2>
+        <h2>SEARCH</h2>
         <form className="d-flex flex-column h5" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="mobile_number">Mobile Number</label>
-            <InputForm
-              type="text"
-              id="mobile_number"
-              name="mobile_number"
-              placeholder="Enter a customer's phone number"
-              formData={formData}
-              handleChange={handleChange}
-            />
-          </div>
-          <div className="mt-3">
-            <button className="btn btn-primary mr-2" type="submit">
-              Find
-            </button>
-          </div>
-          <div>
-            {/* checks if reservations were loaded */}
-            {reservations && (
-              <ReservationsTable
-                reservations={reservations}
-                error={reservationsError}
+          <div className="row">
+            <label className="col-sm-2 col-form-label" htmlFor="mobile_number">
+              Mobile Number
+            </label>
+            <div className="col-sm-9">
+              <InputForm
+                type="text"
+                id="mobile_number"
+                name="mobile_number"
+                placeholder="Enter a customer's phone number"
+                formData={formData}
+                handleChange={handleChange}
               />
-            )}
+            </div>
+            <div className="col-sm-1">
+              <button className="btn submit-button" type="submit">
+                Find
+              </button>
+            </div>
           </div>
         </form>
+        <div>
+          {/* checks if reservations were loaded */}
+          {reservations && (
+            <ReservationsTable
+              reservations={reservations}
+              error={reservationsError}
+            />
+          )}
+        </div>
       </div>
     </>
   );

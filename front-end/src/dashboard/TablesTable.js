@@ -24,56 +24,46 @@ export default function TablesTable({ tables, error }) {
   }
 
   // sets initial tables list to empty
-  let tablesList = (
-    <tr>
-      <td colSpan={6}>No tables found.</td>
-    </tr>
-  );
+  let tablesList = <p className="mt-3 not-found">No tables found.</p>;
 
   // maps tables list to rows of tables
   if (tables.length)
     tablesList = tables.map(
       ({ table_id, table_name, capacity, reservation_id }, index) => (
-        <tr key={index}>
-          <td>{table_id}</td>
-          <td>{table_name}</td>
-          <td>{capacity}</td>
-          <td data-table-id-status={table_id}>
-            {reservation_id ? "Occupied" : "Free"}
-          </td>
-          <td>
+        <div key={index} className="card mt-3">
+          <div className="card-header">#{table_id}</div>
+          <div className="card-body">
+            <div className="d-flex justify-content-between text-secondary">
+              <h4 className="h3">Table {table_name}</h4>
+              <p className="h5 font-weight-normal">
+                {capacity} seat{capacity > 1 && "s"}
+              </p>
+            </div>
             {reservation_id && (
-              <>
+              <div className="d-flex justify-content-end">
                 <button
-                  className="btn btn-primary mr-2"
+                  className="btn special-button"
                   data-table-id-finish={table_id}
                   onClick={() => handleClick(reservation_id, table_id)}
                 >
                   Finish
                 </button>
                 <ErrorAlert error={finishError} />
-              </>
+              </div>
             )}
-          </td>
-        </tr>
+          </div>
+          <div className="card-footer" data-table-id-status={table_id}>
+            {!reservation_id ? "Free" : "Occupied"}
+          </div>
+        </div>
       )
     );
 
   return (
     <div>
-      <h4 className="mb-0">Tables</h4>
+      <h3 className="mt-3 py-3 div-border">Tables</h3>
       <ErrorAlert error={error} />
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Table Name</th>
-            <th>Capacity</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>{tablesList}</tbody>
-      </table>
+      {!error && tablesList}
     </div>
   );
 }
