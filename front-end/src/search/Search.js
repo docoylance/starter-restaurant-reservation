@@ -65,7 +65,7 @@ function Search() {
       <div className="d-flex flex-column">
         <h2>SEARCH</h2>
         <form className="d-flex flex-column h5" onSubmit={handleSubmit}>
-          <div className="row">
+          <div className="d-flex flex-wrap">
             <label className="col-sm-2 col-form-label" htmlFor="mobile_number">
               Mobile Number
             </label>
