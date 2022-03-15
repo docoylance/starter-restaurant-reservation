@@ -14,7 +14,7 @@ https://rest-reserve-backend-fc.herokuapp.com/
 ## Database setup
 
 1. Set up a new database instance.
-1. After setting up your database instance, assign the connection URL to the configuration variable "DATABASE_URL".
+1. After setting up your database instance, assign the connection URL to the configuration variable `DATABASE_URL`.
 
 ### Knex
 
