@@ -12,7 +12,7 @@ async function list(req, res) {
   let data;
   if (mobile_number) {
     data = await service.listQueryNumber(mobile_number);
-  } else if (date) {
+  } else {
     data = await service.list(date);
   }
   res.json({ data });
@@ -30,7 +30,7 @@ async function read(req, res, next) {
   if (!data)
     next({
       status: 404,
-      message: `Reservation id ${reservation_id} does not exist`,
+      message: `Reservation id ${reservation_id} does not exist.`,
     });
   res.json({ data });
 }

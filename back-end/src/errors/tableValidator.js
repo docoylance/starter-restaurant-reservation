@@ -22,13 +22,13 @@ function tableValidator(req, res, next) {
   if (table_name.length < 2)
     next({
       status: 400,
-      message: "table_name field must be more than 2 characters",
+      message: "table_name property must be more than 2 characters",
     });
 
   if (typeof capacity !== "number")
     next({
       status: 400,
-      message: "capacity field should be a number",
+      message: "capacity property should be a number",
     });
 
   if (capacity <= 0)

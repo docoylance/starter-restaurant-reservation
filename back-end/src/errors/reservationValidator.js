@@ -21,7 +21,7 @@ function reservationValidator(req, res, next) {
   });
 
   if (missing.length > 0)
-    next({ status: 400, message: `${missing.join(", ")}is required.` });
+    next({ status: 400, message: `${missing.join(", ")} is required.` });
 
   // US-01
   const { reservation_date, reservation_time, people, status } = data;
@@ -35,7 +35,7 @@ function reservationValidator(req, res, next) {
   if (people <= 0)
     next({
       status: 400,
-      message: "people field must be greater than 0",
+      message: "people property must be greater than 0",
     });
 
   if (!Date.parse(reservation_date))

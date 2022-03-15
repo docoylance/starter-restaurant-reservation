@@ -10,19 +10,19 @@ async function seatResValidator(req, res, next) {
   if (!data)
     next({
       status: 404,
-      message: `Reservation id ${reservation_id} does not exist`,
+      message: `Reservation id ${reservation_id} does not exist.`,
     });
 
   if (status && !statuses.has(status))
     next({
       status: 400,
-      message: `Reservation status "${status}" is unknown`,
+      message: `Reservation status "${status}" is unknown.`,
     });
 
   if (status && data.status === "finished")
     next({
       status: 400,
-      message: `Reservation is already finished. A finished reservation can not be updated.`,
+      message: `Reservation is already finished. A finished reservation cannot be updated.`,
     });
 
   next();
