@@ -54,7 +54,7 @@ export default function ReservationsTable({ reservations, error }) {
                 {last_name}, {first_name}
               </h4>
               <p className="h5 font-weight-normal">
-                {people} person{people.length > 1 && "s"}
+                {people} person{people > 1 && "s"}
               </p>
             </div>
             <div className="text-secondary mt-0">
